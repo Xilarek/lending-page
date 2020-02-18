@@ -1,12 +1,12 @@
-window.addEventListener('DOMContentLoaded', function(){
+window.addEventListener('DOMContentLoaded', () => {
     'use strict';
     //Timer
-    function countTimer(deadline) {
-        let timerHours = document.querySelector('#timer-hours'),
+    const countTimer = (deadline) => {
+        const timerHours = document.querySelector('#timer-hours'),
             timerMinutes = document.querySelector('#timer-minutes'),
             timerSeconds = document.querySelector('#timer-seconds');
             //Дата когда должен остановиться таймер
-            function getTimeRemaining() {
+            const getTimeRemaining = () => {
                 let dateStop = new Date(deadline).getTime(),
             //Текущая дата
             dateNow = new Date().getTime(),
@@ -15,7 +15,7 @@ window.addEventListener('DOMContentLoaded', function(){
             seconds = Math.floor(timeRemaining % 60),
             minutes = Math.floor((timeRemaining / 60) % 60),
             hours = Math.floor(timeRemaining / 60 / 60);
-            // Если дата прошла получаю 00.00.00
+            // Если дата прошла вывожу 00.00.00
             if (timeRemaining < 0) {
                 seconds = 0;
                 minutes = 0;
@@ -23,9 +23,9 @@ window.addEventListener('DOMContentLoaded', function(){
             }
             return {timeRemaining, hours, minutes, seconds};
             
-            }
-            function upDateClock() {
-                let timer = getTimeRemaining();
+            };
+            const  upDateClock = () => {
+                const timer = getTimeRemaining();
             //Выводим значения на экран 
             timerHours.textContent = timer.hours;
             timerMinutes.textContent = timer.minutes;
@@ -38,11 +38,9 @@ window.addEventListener('DOMContentLoaded', function(){
             }if (timerSeconds.textContent < 10) {
                 timerSeconds.textContent = '0' + timerSeconds.textContent;
             }
-            }
+            setInterval(upDateClock, 1000);
+            };
             upDateClock();
-    }
-
-    //countTimer('01 july 2020');
-    setInterval(countTimer, 1000, '18 february 2020');
-
+    };
+    countTimer('19 february 2020');
 });
