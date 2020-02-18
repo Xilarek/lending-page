@@ -1,10 +1,10 @@
-window.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', () => {
     'use strict';
     //Timer
     const countTimer = (deadline) => {
-        const timerHours = document.querySelector('#timer-hours'),
-            timerMinutes = document.querySelector('#timer-minutes'),
-            timerSeconds = document.querySelector('#timer-seconds');
+        const timerHours = document.getElementById('timer-hours'),
+            timerMinutes = document.getElementById('timer-minutes'),
+            timerSeconds = document.getElementById('timer-seconds');
             //Дата когда должен остановиться таймер
             const getTimeRemaining = () => {
                 let dateStop = new Date(deadline).getTime(),
@@ -38,9 +38,8 @@ window.addEventListener('DOMContentLoaded', () => {
             }if (timerSeconds.textContent < 10) {
                 timerSeconds.textContent = '0' + timerSeconds.textContent;
             }
-            setInterval(upDateClock, 1000);
             };
-            upDateClock();
+            setInterval(upDateClock, 1000);
     };
     countTimer('19 february 2020');
 });
