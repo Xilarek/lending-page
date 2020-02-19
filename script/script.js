@@ -30,7 +30,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
         };
         const upDateClock = () => {
-            const { hours, minutes, seconds} = getTimeRemaining();
+            const {
+                hours,
+                minutes,
+                seconds
+            } = getTimeRemaining();
             //Выводим значения на экран 
             timerHours.textContent = hours;
             timerMinutes.textContent = minutes;
@@ -48,5 +52,57 @@ document.addEventListener('DOMContentLoaded', () => {
         };
         setInterval(upDateClock, 1000);
     };
-    countTimer('19 february 2020');
+    countTimer('20 february 2020');
+
+    //Меню
+    const toggleMenu = () => {
+        const btnMenu = document.querySelector('.menu'),
+            menu = document.querySelector('menu'),
+            closeBtn = document.querySelector('.close-btn'),
+            menuItems = menu.querySelectorAll('ul>li');
+
+        const handlerMenu = () => {
+            menu.classList.toggle('active-menu');
+        };
+        btnMenu.addEventListener('click', handlerMenu);
+        closeBtn.addEventListener('click', handlerMenu);
+
+        menuItems.forEach((elem) => elem.addEventListener('click', handlerMenu));
+        
+
+    };
+    toggleMenu();
+
+    //popup
+
+    const togglePopUp = () => {
+        const popup = document.querySelector('.popup'),
+        popupBtn = document.querySelectorAll('.popup-btn'),
+        popUpClose = document.querySelector('.popup-close'),
+        popupContent = document.querySelector('.popup-content');
+
+        popupBtn.forEach((elem) => {
+            elem.addEventListener('click', () => {
+                popup.style.display = 'block';
+                //Добавляю анимацию на модельное окно 
+                const start = Date.now();
+                let timer = setInterval(() => {
+                    let timePassed = Date.now() - start;
+                    if (timePassed >= 1700) {
+                        clearInterval(timer);
+                        return;
+                    }
+                    draw(timePassed);
+                }, 20); 
+                const draw = (timePassed) => {
+                    popupContent.style.top = timePassed / 8 + 'px';
+                };
+            });
+            popUpClose.addEventListener('click', () => {
+                popup.style.display = 'none';
+            });
+        });
+
+    };
+    togglePopUp();
 });
