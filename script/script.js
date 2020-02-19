@@ -20,6 +20,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 seconds = 0;
                 minutes = 0;
                 hours = 0;
+                clearInterval(upDateClock);
             }
             return {
                 timeRemaining,
@@ -68,7 +69,7 @@ document.addEventListener('DOMContentLoaded', () => {
         closeBtn.addEventListener('click', handlerMenu);
 
         menuItems.forEach((elem) => elem.addEventListener('click', handlerMenu));
-        
+
 
     };
     toggleMenu();
@@ -77,32 +78,38 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const togglePopUp = () => {
         const popup = document.querySelector('.popup'),
-        popupBtn = document.querySelectorAll('.popup-btn'),
-        popUpClose = document.querySelector('.popup-close'),
-        popupContent = document.querySelector('.popup-content');
+            popupBtn = document.querySelectorAll('.popup-btn'),
+            popUpClose = document.querySelector('.popup-close'),
+            popupContent = document.querySelector('.popup-content'),
+            //Время анимации
+            timeAnimate = 1700;
 
         popupBtn.forEach((elem) => {
             elem.addEventListener('click', () => {
+                popupContent.style.left = '44' +'%';
+                popupContent.style.top = '0';
                 popup.style.display = 'block';
                 //Добавляю анимацию на модельное окно 
                 const start = Date.now(),
                     windowSize = window.innerWidth;
-                    if (windowSize < 768 ) {
-                        console.log('нет анимации');
-                    } else {
-                        let timer = setInterval(() => {
-                            let timePassed = Date.now() - start;
-                            if (timePassed >= 1700) {
-                                clearInterval(timer);
-                                return;
-                            }
-                            draw(timePassed);
-                        }, 20); 
-                        const draw = (timePassed) => {
-                            popupContent.style.top = timePassed / 8 + 'px';
-                        };
-                    }
-                
+                if (windowSize <= 768) {
+                    popupContent.style.top = '10'+'%';
+                    console.log('нет анимации');
+                } else {
+                    let timer = setInterval(() => {
+                        let timePassed = Date.now() - start;
+
+                        if (timePassed >= timeAnimate) {
+                            clearInterval(timer);
+                            return;
+                        }
+                        draw(timePassed);
+                    }, 20);
+                    const draw = (timePassed) => {
+                        popupContent.style.top = timePassed / 15 + 'px';
+                    };
+                }
+
             });
             popUpClose.addEventListener('click', () => {
                 popup.style.display = 'none';
