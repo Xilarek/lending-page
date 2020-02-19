@@ -767,6 +767,7 @@ footer .web {
 
 .popup {
     display: none;
+    justify-content: center;
     position: fixed;
     left: 0;
     top: 0;
@@ -793,10 +794,7 @@ footer .web {
     position: fixed;
     text-align: center;
     width: 40rem;
-    left: 38%;
     top: 10%;
-    -webkit-transform: translateX(-50px);
-    transform: translateX(-50px);
     padding: 2rem 6rem;
     background-color: #24241f
 }
@@ -1057,9 +1055,7 @@ footer .web {
         text-align: left
     }
 
-    .popup .popup-content {
-        left: 30%
-    }
+
 }
 
 @media (max-width:690px) {
@@ -1067,9 +1063,7 @@ footer .web {
         height: 4rem
     }
 
-    .popup-content {
-        left: 25%
-    }
+
 
     .portfolio-btn {
         width: 40px;
@@ -1096,9 +1090,7 @@ footer .web {
 }
 
 @media (max-width:500px) {
-    .popup .popup-content {
-        left: 18%
-    }
+
 
     .portfolio-content {
         height: 240px
@@ -1163,7 +1155,7 @@ footer .web {
     }
 
     .popup .popup-content {
-        left: 15%;
+
         width: 100%
     }
 

@@ -82,18 +82,20 @@ document.addEventListener('DOMContentLoaded', () => {
             popUpClose = document.querySelector('.popup-close'),
             popupContent = document.querySelector('.popup-content'),
             //Время анимации
-            timeAnimate = 1700;
+            timeAnimate = 1700,
+            pixelStep = 15,
+            indentationLeft = '40%';
 
         popupBtn.forEach((elem) => {
             elem.addEventListener('click', () => {
-                popupContent.style.left = '44' +'%';
-                popupContent.style.top = '0';
-                popup.style.display = 'block';
+                popupContent.style.left = indentationLeft;
+                popupContent.style.top = '';
+                popup.style.display = 'flex';
+                
                 //Добавляю анимацию на модельное окно 
                 const start = Date.now(),
                     windowSize = window.innerWidth;
                 if (windowSize <= 768) {
-                    popupContent.style.top = '10'+'%';
                     console.log('нет анимации');
                 } else {
                     let timer = setInterval(() => {
@@ -106,7 +108,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         draw(timePassed);
                     }, 20);
                     const draw = (timePassed) => {
-                        popupContent.style.top = timePassed / 15 + 'px';
+                        popupContent.style.top = timePassed / pixelStep + 'px';
                     };
                 }
 
