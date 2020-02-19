@@ -85,18 +85,24 @@ document.addEventListener('DOMContentLoaded', () => {
             elem.addEventListener('click', () => {
                 popup.style.display = 'block';
                 //Добавляю анимацию на модельное окно 
-                const start = Date.now();
-                let timer = setInterval(() => {
-                    let timePassed = Date.now() - start;
-                    if (timePassed >= 1700) {
-                        clearInterval(timer);
-                        return;
+                const start = Date.now(),
+                    windowSize = window.innerWidth;
+                    if (windowSize < 768 ) {
+                        console.log('нет анимации');
+                    } else {
+                        let timer = setInterval(() => {
+                            let timePassed = Date.now() - start;
+                            if (timePassed >= 1700) {
+                                clearInterval(timer);
+                                return;
+                            }
+                            draw(timePassed);
+                        }, 20); 
+                        const draw = (timePassed) => {
+                            popupContent.style.top = timePassed / 8 + 'px';
+                        };
                     }
-                    draw(timePassed);
-                }, 20); 
-                const draw = (timePassed) => {
-                    popupContent.style.top = timePassed / 8 + 'px';
-                };
+                
             });
             popUpClose.addEventListener('click', () => {
                 popup.style.display = 'none';
