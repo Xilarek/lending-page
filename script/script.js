@@ -5,6 +5,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const timerHours = document.getElementById('timer-hours'),
             timerMinutes = document.getElementById('timer-minutes'),
             timerSeconds = document.getElementById('timer-seconds');
+            
         //Дата когда должен остановиться таймер
         const getTimeRemaining = () => {
             let dateStop = new Date(deadline).getTime(),
@@ -20,7 +21,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 seconds = 0;
                 minutes = 0;
                 hours = 0;
-                clearInterval(upDateClock);
             }
             return {
                 timeRemaining,
@@ -28,18 +28,19 @@ document.addEventListener('DOMContentLoaded', () => {
                 minutes,
                 seconds
             };
+            
 
         };
         const upDateClock = () => {
-            const {
-                hours,
-                minutes,
-                seconds
-            } = getTimeRemaining();
+            let timer = getTimeRemaining();
             //Выводим значения на экран 
-            timerHours.textContent = hours;
-            timerMinutes.textContent = minutes;
-            timerSeconds.textContent = seconds;
+            timerHours.textContent = timer.hours;
+            timerMinutes.textContent = timer.minutes;
+            timerSeconds.textContent = timer.seconds;
+            if (timer.timeRemaining < 0) {
+                clearInterval(timerId);
+            }
+            console.log(timer.timeRemaining);
             //Добавляю 0 перед значениями, если это необходимо 
             if (timerHours.textContent < 10) {
                 timerHours.textContent = '0' + timerHours.textContent;
@@ -50,8 +51,9 @@ document.addEventListener('DOMContentLoaded', () => {
             if (timerSeconds.textContent < 10) {
                 timerSeconds.textContent = '0' + timerSeconds.textContent;
             }
+            
         };
-        setInterval(upDateClock, 1000);
+        const timerId = setInterval(upDateClock, 1000);
     };
     countTimer('20 february 2020');
 
@@ -89,13 +91,15 @@ document.addEventListener('DOMContentLoaded', () => {
         popupBtn.forEach((elem) => {
             elem.addEventListener('click', () => {
                 popupContent.style.left = indentationLeft;
-                popupContent.style.top = '';
+                popupContent.style.top = '0';
                 popup.style.display = 'flex';
                 
                 //Добавляю анимацию на модельное окно 
                 const start = Date.now(),
                     windowSize = window.innerWidth;
                 if (windowSize <= 768) {
+                    popupContent.style.left = '';
+                    popupContent.style.top = '';
                     console.log('нет анимации');
                 } else {
                     let timer = setInterval(() => {
