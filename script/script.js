@@ -5,7 +5,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const timerHours = document.getElementById('timer-hours'),
             timerMinutes = document.getElementById('timer-minutes'),
             timerSeconds = document.getElementById('timer-seconds');
-            
+
         //Дата когда должен остановиться таймер
         const getTimeRemaining = () => {
             let dateStop = new Date(deadline).getTime(),
@@ -28,7 +28,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 minutes,
                 seconds
             };
-            
+
 
         };
         const upDateClock = () => {
@@ -40,7 +40,6 @@ document.addEventListener('DOMContentLoaded', () => {
             if (timer.timeRemaining < 0) {
                 clearInterval(timerId);
             }
-            console.log(timer.timeRemaining);
             //Добавляю 0 перед значениями, если это необходимо 
             if (timerHours.textContent < 10) {
                 timerHours.textContent = '0' + timerHours.textContent;
@@ -51,7 +50,7 @@ document.addEventListener('DOMContentLoaded', () => {
             if (timerSeconds.textContent < 10) {
                 timerSeconds.textContent = '0' + timerSeconds.textContent;
             }
-            
+
         };
         const timerId = setInterval(upDateClock, 1000);
     };
@@ -61,27 +60,29 @@ document.addEventListener('DOMContentLoaded', () => {
     const toggleMenu = () => {
         const btnMenu = document.querySelector('.menu'),
             menu = document.querySelector('menu'),
-            closeBtn = document.querySelector('.close-btn'),
             menuItems = menu.querySelectorAll('ul>li');
 
-        const handlerMenu = () => {
+        btnMenu.addEventListener('click', () => {
             menu.classList.toggle('active-menu');
-        };
-        btnMenu.addEventListener('click', handlerMenu);
-        closeBtn.addEventListener('click', handlerMenu);
-
-        menuItems.forEach((elem) => elem.addEventListener('click', handlerMenu));
-
-
+        });
+        menu.addEventListener('click', (event) => {
+            let target = event.target;
+            console.log(target);
+            if (target.classList.contains('close-btn')) {
+                menu.classList.toggle('active-menu');
+            }
+            if ( target.closest('li')) {
+                menu.classList.toggle('active-menu');
+            }
+            
+        });
     };
     toggleMenu();
 
     //popup
-
     const togglePopUp = () => {
-        const popup = document.querySelector('.popup'),
+        const popUp = document.querySelector('.popup'),
             popupBtn = document.querySelectorAll('.popup-btn'),
-            popUpClose = document.querySelector('.popup-close'),
             popupContent = document.querySelector('.popup-content'),
             //Время анимации
             timeAnimate = 1700,
@@ -92,8 +93,8 @@ document.addEventListener('DOMContentLoaded', () => {
             elem.addEventListener('click', () => {
                 popupContent.style.left = indentationLeft;
                 popupContent.style.top = '0';
-                popup.style.display = 'flex';
-                
+                popUp.style.display = 'flex';
+
                 //Добавляю анимацию на модельное окно 
                 const start = Date.now(),
                     windowSize = window.innerWidth;
@@ -115,13 +116,60 @@ document.addEventListener('DOMContentLoaded', () => {
                         popupContent.style.top = timePassed / pixelStep + 'px';
                     };
                 }
-
             });
-            popUpClose.addEventListener('click', () => {
-                popup.style.display = 'none';
+
+            popUp.addEventListener('click', (event) => {
+                let target = event.target;
+                console.log(target);
+
+                if (target.classList.contains('popup-close')) {
+                    popUp.style.display = 'none';
+                } else {
+                    target = target.closest('.popup-content');
+
+                    if (!target) {
+                        popUp.style.display = 'none';
+                    }
+                }
             });
         });
 
     };
     togglePopUp();
+
+    //табы
+
+    const tabs = () => {
+        const tabHeader = document.querySelector('.service-header'),
+            tab = tabHeader.querySelectorAll('.service-header-tab'),
+            tabContent = document.querySelectorAll('.service-tab');
+        //Функция будет перебирать все наши tab находить необходимый и его выдавать 
+        const toggleTabContent = (index) => {
+            for (let i = 0; i < tabContent.length; i++) {
+                if (index === i) {
+                    tab[i].classList.add('active');
+                    tabContent[i].classList.remove('d-none');
+                } else {
+                    tab[i].classList.remove('active');
+                    tabContent[i].classList.add('d-none');
+                }
+            }
+        };
+
+        tabHeader.addEventListener('click', (event) => {
+            let target = event.target;
+            //Проверяет силектор на соответствие таргету и присвоит его если найдет у родителя
+            target = target.closest('.service-header-tab');
+            //Проверяем если в таргете что-то
+            if (target) {
+                tab.forEach((item, i) => {
+                    if (item === target) {
+                        toggleTabContent(i);
+                    }
+                });
+            }
+        });
+
+    };
+    tabs();
 });
