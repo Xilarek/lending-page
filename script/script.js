@@ -1,10 +1,11 @@
 document.addEventListener('DOMContentLoaded', () => {
     'use strict';
-    //Timer
+    //Таймер
     const countTimer = (deadline) => {
         const timerHours = document.getElementById('timer-hours'),
             timerMinutes = document.getElementById('timer-minutes'),
             timerSeconds = document.getElementById('timer-seconds');
+
 
         //Дата когда должен остановиться таймер
         const getTimeRemaining = () => {
@@ -32,7 +33,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         };
         const upDateClock = () => {
-            let timer = getTimeRemaining();
+            const timer = getTimeRemaining();
             //Выводим значения на экран 
             timerHours.textContent = timer.hours;
             timerMinutes.textContent = timer.minutes;
@@ -54,7 +55,7 @@ document.addEventListener('DOMContentLoaded', () => {
         };
         const timerId = setInterval(upDateClock, 1000);
     };
-    countTimer('20 february 2020');
+    countTimer('25 february 2020');
 
     //Меню
     const toggleMenu = () => {
@@ -103,8 +104,8 @@ document.addEventListener('DOMContentLoaded', () => {
                     popupContent.style.top = '';
                     console.log('нет анимации');
                 } else {
-                    let timer = setInterval(() => {
-                        let timePassed = Date.now() - start;
+                    const timer = setInterval(() => {
+                        const timePassed = Date.now() - start;
 
                         if (timePassed >= timeAnimate) {
                             clearInterval(timer);
@@ -175,10 +176,10 @@ document.addEventListener('DOMContentLoaded', () => {
     //Слайдер
     const slider = () => {
         const slide = document.querySelectorAll('.portfolio-item'),
-            btn = document.querySelectorAll('.portfolio-btn'),
+
             slider = document.querySelector('.portfolio-content'),
             dotsUl = document.querySelector('.portfolio-dots');
-            
+
 
         //Переменная, которая будет содежать индекс текущего слайда, интервал и точку
         let currentSlide = 0,
@@ -187,10 +188,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
         //Проверяем кол-во слайдеров и создаем необходимое кол-во точек
         const createPoints = () => {
-            for ( let i = 0; i < slide.length; i++ ) {
-                    let li = document.createElement('li');
-                    li.classList.add('dot');
-                    dotsUl.appendChild(li);
+            for (let i = 0; i < slide.length; i++) {
+                let li = document.createElement('li');
+                li.classList.add('dot');
+                dotsUl.append(li);
             }
             dots = dotsUl.querySelectorAll('.dot');
         };
@@ -210,10 +211,10 @@ document.addEventListener('DOMContentLoaded', () => {
             prevSlide(dots, currentSlide, 'dot-active');
             currentSlide++;
             //Ограничиваем кол-во слайдов
-            if(currentSlide >= slide.length) {
+            if (currentSlide >= slide.length) {
                 currentSlide = 0;
             }
-            nextSlide(slide, currentSlide, 'portfolio-item-active' );
+            nextSlide(slide, currentSlide, 'portfolio-item-active');
             nextSlide(dots, currentSlide, 'dot-active');
 
         };
@@ -229,11 +230,11 @@ document.addEventListener('DOMContentLoaded', () => {
         //Взаимодействие со слайдером вручную
         slider.addEventListener('click', (event) => {
             event.preventDefault();
-            
-            let target = event.target;
+
+            const target = event.target;
 
             //Ограничения на клик(если кликнули не на один из элементов)
-            if(!target.matches('.portfolio-btn, .dot')) {
+            if (!target.matches('.portfolio-btn, .dot')) {
                 return;
             }
 
@@ -242,12 +243,12 @@ document.addEventListener('DOMContentLoaded', () => {
             prevSlide(dots, currentSlide, 'dot-active');
 
             //Проверяем на какую кнопку нажали
-            if(target.matches('#arrow-right')) {
+            if (target.matches('#arrow-right')) {
                 currentSlide++;
-            }else if(target.matches('#arrow-left')) {
+            } else if (target.matches('#arrow-left')) {
                 currentSlide--;
 
-            //Присваиваем индекс исходя из того на какую точку мы кликнули
+                //Присваиваем индекс исходя из того на какую точку мы кликнули
             } else if (target.matches('.dot')) {
                 dots.forEach((elem, index) => {
                     if (elem === target) {
@@ -256,35 +257,70 @@ document.addEventListener('DOMContentLoaded', () => {
                 });
             }
 
-            if(currentSlide >= slide.length) {
+            if (currentSlide >= slide.length) {
                 currentSlide = 0;
             }
 
-            if(currentSlide < 0) {
+            if (currentSlide < 0) {
                 currentSlide = slide.length - 1;
             }
             //Добавляем классы тому слайду, который получился после проверки на условия
-            nextSlide(slide, currentSlide, 'portfolio-item-active' );
+            nextSlide(slide, currentSlide, 'portfolio-item-active');
             nextSlide(dots, currentSlide, 'dot-active');
         });
 
         slider.addEventListener('mouseover', (event) => {
-            if(event.target.matches('.portfolio-btn') || 
-            event.target.matches('.dot')) {
+            if (event.target.matches('.portfolio-btn') ||
+                event.target.matches('.dot')) {
                 stopSlider();
             }
         });
         slider.addEventListener('mouseout', (event) => {
-            if(event.target.matches('.portfolio-btn') || 
-            event.target.matches('.dot')) {
+            if (event.target.matches('.portfolio-btn') ||
+                event.target.matches('.dot')) {
                 startSlider();
             }
         });
         createPoints();
         startSlider(2500);
 
-        
-    };
 
+    };
     slider();
+    //Смена аватаров команды
+    const command = () => {
+        const command = document.getElementById('command');
+        command.addEventListener('mouseover', event => {
+            const target = event.target;
+            if (target.matches('img')) {
+                [event.target.dataset.img, event.target.src] = [event.target.src, event.target.dataset.img];
+            }
+        });
+        command.addEventListener('mouseout', event => {
+            const target = event.target;
+            if (target.matches('img')) {
+                [event.target.dataset.img, event.target.src] = [event.target.src, event.target.dataset.img];
+            }
+        });
+    };
+    command();
+
+    //Валидатор рассчета стоимости
+    const validatorDataInput = () => {
+        const squery = document.querySelector('.calc-square'),
+            counts = document.querySelector('.calc-count'),
+            calcDay = document.querySelector('.calc-day');
+
+        squery.addEventListener('input', () => {
+            squery.value = squery.value.replace(/\D/g, '');
+        });
+        counts.addEventListener('input', () => {
+            counts.value = counts.value.replace(/\D/g, '');
+        });
+        calcDay.addEventListener('input', () => {
+            calcDay.value = calcDay.value.replace(/\D/g, '');
+        });
+
+    };
+    validatorDataInput();
 });
