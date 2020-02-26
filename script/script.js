@@ -73,10 +73,10 @@ document.addEventListener('DOMContentLoaded', () => {
                 menu.classList.toggle('active-menu');
             }
             if (target.closest('li')) {
-                menu.classList.toggle('active-menu');
+                menu.classList.toggle('.active-menu');
             }
-
         });
+           
     };
     toggleMenu();
 
@@ -121,7 +121,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
             popUp.addEventListener('click', (event) => {
                 let target = event.target;
-                console.log(target);
 
                 if (target.classList.contains('popup-close')) {
                     popUp.style.display = 'none';
@@ -287,6 +286,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     };
     slider();
+
     //Смена аватаров команды
     const command = () => {
         const command = document.getElementById('command');
@@ -304,7 +304,7 @@ document.addEventListener('DOMContentLoaded', () => {
     command();
 
     //Валидатор рассчета стоимости
-    const validateNumber = ( elem, reg) => {
+    const validateNumber = (elem, reg) => {
         elem.value = elem.value.replace(reg, '');
     };
     const validatorDataInput = () => {
@@ -312,9 +312,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
         calcBlock.addEventListener('input', event => {
             const target = event.target;
-            if(target.matches('input')) {
-                if(target.matches('.calc-square')) {
-                    validateNumber(target, /[^\d.]/ig); 
+            if (target.matches('input')) {
+                if (target.matches('.calc-square')) {
+                    validateNumber(target, /[^\d.]/ig);
                 } else {
                     validateNumber(target, /[\D]/g);
                 }
