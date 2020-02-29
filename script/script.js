@@ -384,33 +384,34 @@ document.addEventListener('DOMContentLoaded', () => {
             allForm[i].addEventListener('submit', (event) => {
                 event.preventDefault();
                 allForm[i].append(statusMessage);
-                statusMessage.textContent = loadMessage;
                 const formData = new FormData(allForm[i]);
                 
                 let body = {};
-                let check;
+                let check = true;
+                
                 //Валидация
                 
                 formData.forEach((value, key) => {
-                    switch(key) {
+                    switch (key) {
                         case 'user_name' :
-                           check = /^[А-ЯЁ ][а-яё ]*$/.test(value);
-                           break;
+                            if (!/^[А-ЯЁ ][а-яё ]*$/.test(value)) check = false;
+                            break;
                         case 'user_phone' :
-                            check = /^\+?[78]([-()]*\d){10}$/.test(value);
+                            if (!/^\+?[78]([-()]*\d){10}$/.test(value)) check = false;
                             break;
                         case 'user_message' :
-                            check = /^[А-ЯЁ ][а-яё ]*$/.test(value);
+                            if (!/^[А-ЯЁ ][а-яё ]*$/.test(value)) check = false;
                             break;
                     }
-                    if(check) {
-                        
-                        body[key] = value;
-                    } else {
-                        return;
-                    }
+                    body[key] = value;
+
                 });
-                
+                if (!check) {
+                    statusMessage.textContent = 'Не валидные данные';
+                    return;
+                }
+                });
+                statusMessage.textContent = loadMessage;
                 postData(body, () => {
                     statusMessage.textContent = successMessage;
                 }, (error) => {
