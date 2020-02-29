@@ -117,7 +117,7 @@ class Validator {
         }
         
         if (!this.pattern.form2Message) {
-            this.pattern.youMessage = /^[А-ЯЁ\,?\.?\-? ]+([а-яё\,?\.?\-? ]+)*$/gi;
+            this.pattern.youMessage = /^\b[А-ЯЁ\,?\.?\-? ]+\b([а-яё\,?\.?\-? ]\. )*$/gi;
         }
         if (!this.pattern.form2Email || !this.pattern.form1Email ||
              !this.pattern.form3Email) {

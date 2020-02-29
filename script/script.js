@@ -55,7 +55,7 @@ document.addEventListener('DOMContentLoaded', () => {
         };
         const timerId = setInterval(upDateClock, 1000);
     };
-    countTimer('26 february 2020');
+    countTimer('1 March 2020');
 
     //Меню
     const toggleMenu = () => {
@@ -366,4 +366,78 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     };
     calc(100);
+
+    // send-ajax-form
+    const sendForm = () => {
+        const errorMessage = 'Что-то пошло не так...',
+            loadMessage = 'Загрузка',
+            successMessage = 'Спасибо! Мы скоро с вами свяжемся!';
+        
+        const form = document.getElementById('form1'),
+            form2 = document.getElementById('form2'),
+            form3 = document.getElementById('form3');
+        const allForm = [form, form2, form3];
+        
+        const statusMessage = document.createElement('div');
+        statusMessage.style.cssText = 'font-size: 2rem;';
+        for ( let i = 0; i < allForm.length; i++) {
+            allForm[i].addEventListener('submit', (event) => {
+                event.preventDefault();
+                allForm[i].append(statusMessage);
+                statusMessage.textContent = loadMessage;
+                const formData = new FormData(allForm[i]);
+                
+                let body = {};
+                let check;
+                //Валидация
+                
+                formData.forEach((value, key) => {
+                    switch(key) {
+                        case 'user_name' :
+                           check = /^[А-ЯЁ ][а-яё ]*$/.test(value);
+                           break;
+                        case 'user_phone' :
+                            check = /^\+?[78]([-()]*\d){10}$/.test(value);
+                            break;
+                        case 'user_message' :
+                            check = /^[А-ЯЁ ][а-яё ]*$/.test(value);
+                            break;
+                    }
+                    if(check) {
+                        
+                        body[key] = value;
+                    } else {
+                        return;
+                    }
+                });
+                
+                postData(body, () => {
+                    statusMessage.textContent = successMessage;
+                }, (error) => {
+                    statusMessage.textContent = errorMessage;
+                });
+                allForm[i].reset();
+                console.log(body);
+            });
+        }
+        
+        const postData = (body, outputData, errorData) => {
+            const request = new XMLHttpRequest();
+            request.addEventListener('readystatechange', () => {
+                if (request.readyState !== 4) {
+                    return;
+                }
+                if (request.status === 200) {
+                    outputData();
+                } else {
+                    errorData(request.status);
+                }
+            });
+
+            request.open('POST', './server.php');
+            request.setRequestHeader('Content-Type', 'application/json');
+            request.send(JSON.stringify(body));
+        };
+    };
+    sendForm();
 });
