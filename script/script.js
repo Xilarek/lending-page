@@ -76,7 +76,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 menu.classList.toggle('.active-menu');
             }
         });
-           
+
     };
     toggleMenu();
 
@@ -372,45 +372,47 @@ document.addEventListener('DOMContentLoaded', () => {
         const errorMessage = 'Что-то пошло не так...',
             loadMessage = 'Загрузка',
             successMessage = 'Спасибо! Мы скоро с вами свяжемся!';
-        
+
         const form = document.getElementById('form1'),
             form2 = document.getElementById('form2'),
             form3 = document.getElementById('form3');
         const allForm = [form, form2, form3];
-        
+
         const statusMessage = document.createElement('div');
-        statusMessage.style.cssText = 'font-size: 2rem;';
-        for ( let i = 0; i < allForm.length; i++) {
+        statusMessage.style.cssText = 'font-size: 2rem; color: #fff';
+        for (let i = 0; i < allForm.length; i++) {
             allForm[i].addEventListener('submit', (event) => {
                 event.preventDefault();
                 allForm[i].append(statusMessage);
                 const formData = new FormData(allForm[i]);
-                
+
                 let body = {};
                 let check = true;
-                
+
                 //Валидация
-                
                 formData.forEach((value, key) => {
                     switch (key) {
-                        case 'user_name' :
+                        case 'user_name':
                             if (!/^[А-ЯЁ ][а-яё ]*$/.test(value)) check = false;
                             break;
-                        case 'user_phone' :
+                        case 'user_phone':
                             if (!/^\+?[78]([-()]*\d){10}$/.test(value)) check = false;
                             break;
-                        case 'user_message' :
-                            if (!/^[А-ЯЁ ][а-яё ]*$/.test(value)) check = false;
+                        case 'user_message':
+                            if (!/^[А-ЯЁ\,?\.?\-? ]+([а-яё\,?\.?\-? ]+)*$/gi.test(value)) check = false; 
                             break;
                     }
                     body[key] = value;
 
                 });
+                setTimeout(() => {
+                    statusMessage.remove();
+                }, 10000);
                 if (!check) {
                     statusMessage.textContent = 'Не валидные данные';
                     return;
                 }
-                });
+
                 statusMessage.textContent = loadMessage;
                 postData(body, () => {
                     statusMessage.textContent = successMessage;
@@ -421,7 +423,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 console.log(body);
             });
         }
-        
+
         const postData = (body, outputData, errorData) => {
             const request = new XMLHttpRequest();
             request.addEventListener('readystatechange', () => {
