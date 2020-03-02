@@ -421,6 +421,27 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const statusMessage = document.createElement('div');
         statusMessage.style.cssText = 'font-size: 2rem; color: #fff';
+
+        const postData = (body) => {
+            return new Promise((resolve, reject) => {
+                const request = new XMLHttpRequest();
+                request.open('POST', './server.php');
+                request.setRequestHeader('Content-Type', 'application/json');
+                request.addEventListener('readystatechange', () => {
+                if (request.readyState !== 4) {
+                    return;
+                }
+                if (request.status === 200) {
+                    resolve();
+                } else {
+                    reject(request.statusText);
+                }
+            });
+            request.send(JSON.stringify(body));
+            });
+            
+        };
+
         for (let i = 0; i < allForm.length; i++) {
             allForm[i].addEventListener('submit', (event) => {
                 event.preventDefault();
@@ -443,48 +464,31 @@ document.addEventListener('DOMContentLoaded', () => {
                             if (!/^[А-ЯЁ\,?\.?\-? ]+([а-яё\,?\.?\-? ]+)*$/gi.test(value)) {check = false;}
                             break;
                     }
+                    console.log(check);
                     body[key] = value;
-
+                    
                 });
                 setTimeout(() => {
                     statusMessage.remove();
                 }, 10000);
+                
                 if (!check) {
                     statusMessage.textContent = 'Не валидные данные';
                     return;
                 }
-                statusMessage.textContent = loadMessage;
                 
-                allForm[i].reset();
+                statusMessage.textContent = loadMessage;
+
+                postData(body).then(() => {
+                    statusMessage.textContent = successMessage;
+                }, () => {
+                    statusMessage.textContent = errorMessage;
+                });
+    
+                allForm[i].reset(); 
             });
         }
-
-        const postData = (body) => {
-            return new Promise((resolve, reject) => {
-                const request = new XMLHttpRequest();
-                request.addEventListener('readystatechange', () => {
-                if (request.readyState !== 4) {
-                    return;
-                }
-                if (request.status === 200) {
-                    resolve();
-                } else {
-                    reject(request.statusText);
-                }
-            });
-            request.open('POST', './server.php');
-            request.setRequestHeader('Content-Type', 'application/json');
-            request.send(JSON.stringify(body));
-            });
-            
-        };
-        
-        postData().then(() => {
-            statusMessage.textContent = successMessage;
-        }, () => {
-            statusMessage.textContent = errorMessage;
-        });
-        
+ 
     };
     sendForm();
 });
