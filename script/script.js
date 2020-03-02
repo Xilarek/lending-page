@@ -455,7 +455,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 formData.forEach((value, key) => {
                     switch (key) {
                         case 'user_name':
-                            if (!/^[А-ЯЁ ][а-яё ]*$/.test(value)) {check = false;}
+                            if (!/^[А-Яа-яЁё]*$/.test(value)) {check = false;}
                             break;
                         case 'user_phone':
                             if (!/^\+?[78]([-()]*\d){10}$/.test(value)) {check = false;}
@@ -471,7 +471,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 setTimeout(() => {
                     statusMessage.remove();
                 }, 10000);
-                
+
                 if (!check) {
                     statusMessage.textContent = 'Не валидные данные';
                     return;
