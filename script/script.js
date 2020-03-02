@@ -59,26 +59,67 @@ document.addEventListener('DOMContentLoaded', () => {
 
     //Меню
     const toggleMenu = () => {
+
         const btnMenu = document.querySelector('.menu'),
-            menu = document.querySelector('menu');
+            btnMenuImg = btnMenu.querySelector('img'),
+            menu = document.querySelector('menu'),
+            closeBtn = document.querySelector('.close-btn'),
+            menuList = menu.querySelector('ul'),
+            menuListLinks = menuList.querySelectorAll('a'),
+            body = document.querySelector('body');
 
-
-        btnMenu.addEventListener('click', () => {
+        const handlerMenu = () => {
             menu.classList.toggle('active-menu');
-        });
-        menu.addEventListener('click', (event) => {
-            const target = event.target;
+        };
 
-            if (target.classList.contains('close-btn')) {
-                menu.classList.toggle('active-menu');
+        const scrollToBlock = (index) => {
+            for (let i = 0; i < menuListLinks.length; i++) {
+                if (index === i) {
+                    handlerMenu();
+                }
             }
-            if (target.closest('li')) {
-                menu.classList.toggle('.active-menu');
+        };
+
+        body.addEventListener('click', (event) => {
+            let target = event.target,
+                parent = target.parentNode;
+
+            if (target === btnMenuImg) {
+                handlerMenu();
+            } else if (target === closeBtn) {
+                handlerMenu();
+            } else if (parent.tagName === 'li') {
+                menuListLinks.forEach((item, i) => {
+                    if (item === target) {
+                        scrollToBlock(i);
+                    }
+                });
+            } else if (target !== menu) {
+                menu.classList.remove('active-menu');
             }
         });
-
     };
     toggleMenu();
+
+    //Плавное перемещение по якорям
+    const scrollToBlock = () => {
+
+        const menu = document.querySelector('menu'),
+            menuList = menu.querySelector('ul'),
+            menuItem = menuList.querySelectorAll('a[href^="#"]');
+
+        for (let anchor of menuItem) {
+            anchor.addEventListener('click', (event) => {
+                event.preventDefault();
+                const blockId = anchor.getAttribute('href');
+                document.querySelector(blockId).scrollIntoView({
+                    behavior: 'smooth',
+                    block: 'start'
+                });
+            });
+        }
+    };
+    scrollToBlock();
 
     //Pop-Up
     const togglePopUp = () => {
@@ -393,13 +434,13 @@ document.addEventListener('DOMContentLoaded', () => {
                 formData.forEach((value, key) => {
                     switch (key) {
                         case 'user_name':
-                            if (!/^[А-ЯЁ ][а-яё ]*$/.test(value)) check = false;
+                            if (!/^[А-ЯЁ ][а-яё ]*$/.test(value)) {check = false;}
                             break;
                         case 'user_phone':
-                            if (!/^\+?[78]([-()]*\d){10}$/.test(value)) check = false;
+                            if (!/^\+?[78]([-()]*\d){10}$/.test(value)) {check = false;}
                             break;
                         case 'user_message':
-                            if (!/^[А-ЯЁ\,?\.?\-? ]+([а-яё\,?\.?\-? ]+)*$/gi.test(value)) check = false; 
+                            if (!/^[А-ЯЁ\,?\.?\-? ]+([а-яё\,?\.?\-? ]+)*$/gi.test(value)) {check = false;}
                             break;
                     }
                     body[key] = value;
@@ -412,35 +453,38 @@ document.addEventListener('DOMContentLoaded', () => {
                     statusMessage.textContent = 'Не валидные данные';
                     return;
                 }
-
                 statusMessage.textContent = loadMessage;
-                postData(body, () => {
-                    statusMessage.textContent = successMessage;
-                }, (error) => {
-                    statusMessage.textContent = errorMessage;
-                });
+                
                 allForm[i].reset();
-                console.log(body);
             });
         }
 
-        const postData = (body, outputData, errorData) => {
-            const request = new XMLHttpRequest();
-            request.addEventListener('readystatechange', () => {
+        const postData = (body) => {
+            return new Promise((resolve, reject) => {
+                const request = new XMLHttpRequest();
+                request.addEventListener('readystatechange', () => {
                 if (request.readyState !== 4) {
                     return;
                 }
                 if (request.status === 200) {
-                    outputData();
+                    resolve();
                 } else {
-                    errorData(request.status);
+                    reject(request.statusText);
                 }
             });
-
             request.open('POST', './server.php');
             request.setRequestHeader('Content-Type', 'application/json');
             request.send(JSON.stringify(body));
+            });
+            
         };
+        
+        postData().then(() => {
+            statusMessage.textContent = successMessage;
+        }, () => {
+            statusMessage.textContent = errorMessage;
+        });
+        
     };
     sendForm();
 });
