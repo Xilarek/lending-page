@@ -447,7 +447,7 @@ document.addEventListener('DOMContentLoaded', () => {
                             if (!/^\+?[78]([-()]*\d){10}$/.test(value)) {check = false;}
                             break;
                         case 'user_message':
-                            if (!/^[А-ЯЁ\,?\.?\-? ]+([а-яё\,?\.?\-? ]+)*$/gi.test(value)) {check = false;}
+                            if (!/^[А-Яа-яЁё\,?\.?\-? ]+([а-яё\,?\.?\-? ]+)*$/gi.test(value)) {check = false;}
                             break;
                     }
                     console.log(check);
@@ -466,15 +466,13 @@ document.addEventListener('DOMContentLoaded', () => {
                 
                 statusMessage.textContent = loadMessage;
 
-                const postData = (body) => {
-                    return fetch('./server.php', {
+                const postData = body => fetch('./server.php', {
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json'
                         },
                         body: JSON.stringify(body)
                     });  
-                };
 
                 postData(body).then((response) => {
                     if(response.status !== 200) {
