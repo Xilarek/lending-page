@@ -427,25 +427,6 @@ document.addEventListener('DOMContentLoaded', () => {
         const statusMessage = document.createElement('div');
         statusMessage.style.cssText = 'font-size: 2rem; color: #fff';
 
-        const postData = (body) => {
-            return new Promise((resolve, reject) => {
-                const request = new XMLHttpRequest();
-                request.open('POST', './server.php');
-                request.setRequestHeader('Content-Type', 'application/json');
-                request.addEventListener('readystatechange', () => {
-                if (request.readyState !== 4) {
-                    return;
-                }
-                if (request.status === 200) {
-                    resolve();
-                } else {
-                    reject(request.statusText);
-                }
-            });
-            request.send(JSON.stringify(body));
-            });
-            
-        };
 
         for (let i = 0; i < allForm.length; i++) {
             allForm[i].addEventListener('submit', (event) => {
@@ -479,12 +460,26 @@ document.addEventListener('DOMContentLoaded', () => {
 
                 if (!check) {
                     statusMessage.textContent = 'Не валидные данные';
+                    allForm[i].reset();
                     return;
                 }
                 
                 statusMessage.textContent = loadMessage;
 
-                postData(body).then(() => {
+                const postData = (body) => {
+                    return fetch('./server.php', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify(body)
+                    });  
+                };
+
+                postData(body).then((response) => {
+                    if(response.status !== 200) {
+                        throw new Error('status network not 200');
+                    }
                     statusMessage.textContent = successMessage;
                 }, () => {
                     statusMessage.textContent = errorMessage;
