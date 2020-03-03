@@ -55,7 +55,7 @@ document.addEventListener('DOMContentLoaded', () => {
         };
         const timerId = setInterval(upDateClock, 1000);
     };
-    countTimer('1 March 2020');
+    countTimer('4 March 2020');
 
     //Меню
     const toggleMenu = () => {
@@ -418,6 +418,11 @@ document.addEventListener('DOMContentLoaded', () => {
             form2 = document.getElementById('form2'),
             form3 = document.getElementById('form3');
         const allForm = [form, form2, form3];
+         const placeholder = document.getElementsByName('user_phone');
+         for ( let i = 0; i < placeholder.length; i++) {
+             placeholder[i].placeholder = '+7(999)-999-99-99';
+         }
+        
 
         const statusMessage = document.createElement('div');
         statusMessage.style.cssText = 'font-size: 2rem; color: #fff';
