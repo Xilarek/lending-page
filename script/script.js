@@ -402,7 +402,6 @@ document.addEventListener('DOMContentLoaded', () => {
             //Создаем проверку, если событие прошло в одном из инпутов 
             if (target.matches('select') || target.matches('input')) {
                 countSum();
-
             }
         });
     };
