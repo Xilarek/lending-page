@@ -32,7 +32,7 @@
     import sendForm from './modules/sendForm';
 
     //Таймер
-    countTimer('5 March 2020');
+    countTimer('6 March 2020');
     //Меню
     toggleMenu();
     //Плавное перемещение по якорям
