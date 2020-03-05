@@ -39,7 +39,6 @@ const sendForm = () => {
                         if (!/^[А-Яа-яЁё\,?\.?\-? ]+([а-яё\,?\.?\-? ]+)*$/gi.test(value)) {check = false;}
                         break;
                 }
-                console.log(check);
                 body[key] = value;
                 
             });

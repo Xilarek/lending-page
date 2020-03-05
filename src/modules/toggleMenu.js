@@ -2,6 +2,7 @@ const toggleMenu = () => {
 
     const btnMenu = document.querySelector('.menu'),
         btnMenuImg = btnMenu.querySelector('img'),
+        menuTitle = document.getElementById('menu_title'),
         menu = document.querySelector('menu'),
         closeBtn = document.querySelector('.close-btn'),
         menuList = menu.querySelector('ul'),
@@ -24,7 +25,7 @@ const toggleMenu = () => {
         let target = event.target,
             parent = target.parentNode;
 
-        if (target === btnMenuImg) {
+        if (target === btnMenuImg || target === menuTitle ) {
             handlerMenu();
         } else if (target === closeBtn) {
             handlerMenu();

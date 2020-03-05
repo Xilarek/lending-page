@@ -4,7 +4,7 @@ const togglePopUp = () => {
         popupContent = document.querySelector('.popup-content'),
         //Время анимации
         timeAnimate = 1700,
-        pixelStep = 15,
+        pixelStep = 8,
         indentationLeft = '40%';
 
     popupBtn.forEach((elem) => {
@@ -19,7 +19,6 @@ const togglePopUp = () => {
             if (windowSize <= 768) {
                 popupContent.style.left = '';
                 popupContent.style.top = '';
-                console.log('нет анимации');
             } else {
                 const timer = setInterval(() => {
                     const timePassed = Date.now() - start;
