@@ -3,8 +3,8 @@ const togglePopUp = () => {
         popupBtn = document.querySelectorAll('.popup-btn'),
         popupContent = document.querySelector('.popup-content'),
         //Время анимации
-        timeAnimate = 1700,
-        pixelStep = 8,
+        timeAnimate = 1500,
+        pixelStep = 50,
         indentationLeft = '40%';
 
     popupBtn.forEach((elem) => {
@@ -30,7 +30,7 @@ const togglePopUp = () => {
                     draw(timePassed);
                 }, 20);
                 const draw = (timePassed) => {
-                    popupContent.style.top = timePassed / pixelStep + 'px';
+                    popupContent.style.top = timePassed / pixelStep + '%';
                 };
             }
         });

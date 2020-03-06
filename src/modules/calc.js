@@ -25,6 +25,39 @@ const calc = (price = 100) => {
         if (typeValue && squareValue) {
             total = Math.floor(price * (typeValue * squareValue * countValue * dayValue));
         }
+        let animated;
+        // функция - оболочка анимации
+        const animate = ({timing, draw, duration }) => {
+            let start = performance.now();
+            const animateBlock = (time) => {
+                requestAnimationFrame(animateBlock);
+                let timeFraction = (time - start) / duration;
+                if (timeFraction > 1) timeFraction = 1;
+
+                // вычисление текущего состояния анимации
+                let progress = timing(timeFraction);
+
+                draw(progress); // отрисовать её
+
+                if (timeFraction >= 1) {
+                    animated = cancelAnimationFrame(animateBlock);
+                }
+            };
+            animated = requestAnimationFrame(animateBlock);
+        };
+
+        animate({
+            // скорость анимации
+            duration: 1000,
+            // функции расчёта времени
+            timing(timeFraction) {
+                return timeFraction;
+            },
+            // действие, которое повторяем каждую итерацию
+            draw(progress) {
+                totalValue.textContent = Math.floor(progress * total);
+            }
+        });
         totalValue.textContent = total;
     };
 
