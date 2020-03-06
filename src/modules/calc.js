@@ -9,7 +9,8 @@ const calc = (price = 100) => {
     const countSum = () => {
         let total = 0,
             countValue = 1,
-            dayValue = 1;
+            dayValue = 1,
+            animated;
         const typeValue = calcType.options[calcType.selectedIndex].value,
             squareValue = +calcSqare.value;
 
@@ -25,8 +26,9 @@ const calc = (price = 100) => {
         if (typeValue && squareValue) {
             total = Math.floor(price * (typeValue * squareValue * countValue * dayValue));
         }
-        let animated;
+        
         // функция - оболочка анимации
+        cancelAnimationFrame(animated);
         const animate = ({timing, draw, duration }) => {
             let start = performance.now();
             const animateBlock = (time) => {
@@ -40,10 +42,10 @@ const calc = (price = 100) => {
                 draw(progress); // отрисовать её
 
                 if (timeFraction >= 1) {
-                    animated = cancelAnimationFrame(animateBlock);
+                    cancelAnimationFrame(animated);
                 }
             };
-            animated = requestAnimationFrame(animateBlock);
+            requestAnimationFrame(animateBlock);
         };
 
         animate({
