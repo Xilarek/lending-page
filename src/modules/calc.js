@@ -28,10 +28,12 @@ const calc = (price = 100) => {
         }
         
         // функция - оболочка анимации
+        //Если в переменной есть что-то, то обнуляем 
         cancelAnimationFrame(animated);
         const animate = ({timing, draw, duration }) => {
             let start = performance.now();
             const animateBlock = (time) => {
+                //Запускаем анимацию
                 requestAnimationFrame(animateBlock);
                 let timeFraction = (time - start) / duration;
                 if (timeFraction > 1) timeFraction = 1;
@@ -42,6 +44,7 @@ const calc = (price = 100) => {
                 draw(progress); // отрисовать её
 
                 if (timeFraction >= 1) {
+                    //Обнуляем значение как только условия выполнены 
                     cancelAnimationFrame(animated);
                 }
             };

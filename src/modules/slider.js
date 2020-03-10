@@ -1,3 +1,46 @@
+
+/*class SliderCarousel {
+    constructor({slider, slide, dotsUl}){
+        this.slider = document.querySelector(slider);
+        this.slide = document.querySelector(slider).children;
+        this.dotsUl = document.querySelector(dotsUl);
+    }
+
+    init() {
+        this.addGloClass();
+        this.addStyle();
+    }
+
+    addGloClass() {
+        this.slider.classList.add('glo-slider');
+        for ( const item of this.slide ) {
+            item.classList.add('glo-slider__item');
+        }
+        this.dotsUl.classList.add('glo-slider');
+    }
+
+    addStyle() {
+        const style = document.createElement('style');
+        style.id = 'sliderCarusel-style';
+        style.textContent = `
+
+        `;
+        document.head.append(style);
+    }
+}*/
+
+
+
+
+
+
+
+
+
+
+
+
+
 const slider = () => {
     const slide = document.querySelectorAll('.portfolio-item'),
 
